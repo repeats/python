@@ -219,7 +219,7 @@ class TaskManager(object):
     def create_task(self, file_name):
         if not os.path.isfile(file_name):
             return generate_reply(specifications.FAILURE, 'File %s does not exist' % file_name)
-        elif not os.access(file_name, os.X_OK):
+        elif not os.access(file_name, os.R_OK):
             return generate_reply(specifications.FAILURE, 'File %s is not executable' % file_name)
 
         next_id = self._next_id()
