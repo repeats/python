@@ -7,6 +7,16 @@ class KeyboardRequest(request_generator.RequestGenerator):
         self.type = 'action'
         self.device = 'keyboard'
 
+    def press(self, key):
+        self.action = 'press'
+        self.params = [key]
+        return self.send_request()
+
+    def release(self, key):
+        self.action = 'release'
+        self.params = [key]
+        return self.send_request()
+
     def type_key(self, *keys):
         self.action = 'type'
         self.params = keys

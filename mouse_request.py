@@ -6,6 +6,20 @@ class MouseRequest(request_generator.RequestGenerator):
         self.type = 'action'
         self.device = 'mouse'
 
+    def press(self, mask):
+        self.action = 'press'
+        self.params = [mask]
+        self.send_request()
+
+    def release(self, mask):
+        self.action = 'release'
+        self.params = [mask]
+        self.send_request()
+
+    def click(self, mask):
+        self.press(mask)
+        self.release(mask)
+
     def left_click(self, x = None, y = None):
         self.action = 'left_lick'
         if x is None or y is None:
