@@ -1,4 +1,7 @@
-
+import sys
+# Portability between 2 & 3
+if sys.version[0] == '3':
+    basestring = str
 
 SUCCESS = 'Success'
 FAILURE = 'Failure'
