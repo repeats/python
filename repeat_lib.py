@@ -26,6 +26,9 @@ import system_host_request
 import system_client_request
 
 class RepeatClient(object):
+    """Server encoding"""
+    REPEAT_SERVER_ENCODING = 'UTF-8'
+
     """Server will terminate connection if not received anything after this period of time"""
     REPEAT_SERVER_TIMEOUT_SEC = 10
 
@@ -92,7 +95,7 @@ class RepeatClient(object):
                 if portability.is_py2:
                     self.socket.sendall(to_send)
                 else:
-                    self.socket.sendall(bytes(to_send, 'UTF-8'))
+                    self.socket.sendall(to_send.encode(RepeatClient.REPEAT_SERVER_ENCODING))
 
         logger.info("Write process terminated...")
 
@@ -114,7 +117,7 @@ class RepeatClient(object):
             try:
                 ready = select.select([self.socket], [], [], RepeatClient.REPEAT_CLIENT_TIMEOUT_SEC)
                 if ready[0]:
-                    data = self.socket.recv(1024).decode()
+                    data = self.socket.recv(1024).decode(RepeatClient.REPEAT_SERVER_ENCODING)
                 else:
                     data = None
             except socket.error as se:
