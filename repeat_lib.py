@@ -183,7 +183,7 @@ class RepeatClient(object):
 ##############################################################################################################################
 
 if __name__ == "__main__":
-    logging.basicConfig(format='[%(levelname)s][%(filename)s][%(lineno)d] - %(message)s', level=logging.DEBUG)
+    logging.basicConfig(format='[PYTHON][%(levelname)s][%(filename)s][%(lineno)d] - %(message)s', level=logging.DEBUG)
     logger = logging.getLogger(__name__)
 
     client = RepeatClient()
