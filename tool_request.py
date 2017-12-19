@@ -24,3 +24,8 @@ class ToolRequest(request_generator.RequestGenerator):
             self.params.append(cwd)
 
         return self.send_request()
+
+    def get_selection(self, title, selected, choices, timeout_sec = 10):
+        self.action = 'get_selection'
+        self.params = [title, selected] + choices
+        return self.send_request(timeout_sec)

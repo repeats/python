@@ -68,6 +68,7 @@ class TaskManager(object):
 
         next_id = self._next_id()
         self.tasks[next_id] = UserDefinedTask(self.repeat_lib, file_name)
+        logger.info("Created task with ID %s" % next_id)
 
         return self._generate_reply(specifications.SUCCESS, {
                 'id' : next_id,

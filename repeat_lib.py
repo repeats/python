@@ -141,7 +141,11 @@ class RepeatClient(object):
                         returned_object = parsed['content']['message']
                         cv = self.synchronization_objects.pop(message_id)
 
-                        if returned_object is None or len(returned_object) > 0: #Give the output of this to the caller
+                        set_value = returned_object is None \
+                                    or (hasattr(returned_object, '__len__') and len(returned_object) > 0) \
+                                    or (not hasattr(returned_object, '__len__'))
+                        # Give the output of this to the caller
+                        if set_value:
                             self.synchronization_objects[message_id] = returned_object
 
                         cv.set()
