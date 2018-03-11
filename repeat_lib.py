@@ -93,7 +93,7 @@ class RepeatClient(object):
                                             json.dumps(data), RepeatClient.MESSAGE_DELIMITER, RepeatClient.MESSAGE_DELIMITER)
 
                 if portability.is_py2:
-                    self.socket.sendall(to_send)
+                    self.socket.sendall(to_send.encode(RepeatClient.REPEAT_SERVER_ENCODING))
                 else:
                     self.socket.sendall(to_send.encode(RepeatClient.REPEAT_SERVER_ENCODING))
 
