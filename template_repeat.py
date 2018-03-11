@@ -13,6 +13,8 @@ def action(controller, invoker):
 
     # k.set_timeout_sec(5) # Optional: set timeout for any of the above component if you think your call takes a long time
 
-    keys = [] if len(invoker['hotkey']) == 0 else invoker['hotkey'][0]
-    gesture = None if len(invoker['mouse_gesture']) == 0 else invoker['mouse_gesture'][0]['name']
+    hk = [] if len(invoker['hotkey']) == 0 else invoker['hotkey'][0]
+    ks = [] if len(invoker['key_sequence']) == 0 else invoker['key_sequence'][0]
+    mg = None if len(invoker['mouse_gesture']) == 0 else invoker['mouse_gesture'][0]['name']
+    phrase = None if len(invoker['phrases']) == 0 else invoker['phrases'][0]
     # Begin generated code
