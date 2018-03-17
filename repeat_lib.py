@@ -6,6 +6,7 @@ import traceback
 import time
 import logging
 
+import base64
 import socket
 import select
 import threading
@@ -77,6 +78,12 @@ class RepeatClient(object):
         self._clear_queue()
         self.socket.close()
 
+    def _encode_message(self, msg):
+        return base64.b64encode(msg.encode(RepeatClient.REPEAT_SERVER_ENCODING)).decode('ascii')
+
+    def _decode_message(self, msg):
+        return base64.b64decode(msg.encode('ascii')).decode(RepeatClient.REPEAT_SERVER_ENCODING)
+
     def process_write(self):
         while not self.is_terminated:
             data = None
@@ -89,13 +96,14 @@ class RepeatClient(object):
             if keep_alive:
                 self.system.keep_alive()
             else:
+                encoded_data = self._encode_message(json.dumps(data))
                 to_send = '%s%s%s%s%s' % (RepeatClient.MESSAGE_DELIMITER, RepeatClient.MESSAGE_DELIMITER, \
-                                            json.dumps(data), RepeatClient.MESSAGE_DELIMITER, RepeatClient.MESSAGE_DELIMITER)
+                                            encoded_data, RepeatClient.MESSAGE_DELIMITER, RepeatClient.MESSAGE_DELIMITER)
 
                 if portability.is_py2:
-                    self.socket.sendall(to_send.encode(RepeatClient.REPEAT_SERVER_ENCODING))
+                    self.socket.sendall(to_send)
                 else:
-                    self.socket.sendall(to_send.encode(RepeatClient.REPEAT_SERVER_ENCODING))
+                    self.socket.sendall(to_send.encode())
 
         logger.info("Write process terminated...")
 
@@ -104,7 +112,8 @@ class RepeatClient(object):
         for char in received_data:
             if char == RepeatClient.MESSAGE_DELIMITER:
                 if len(self._previous_message) > 0:
-                    output.append(''.join(self._previous_message))
+                    to_add = self._decode_message(''.join(self._previous_message))
+                    output.append(to_add)
                     del self._previous_message[:]
             else:
                 self._previous_message.append(char)
