@@ -1,5 +1,6 @@
 import imp
 import os
+import uuid
 import logging
 logger = logging.getLogger(__name__)
 
@@ -32,11 +33,9 @@ class TaskManager(object):
         assert repeat_lib is not None
         self.repeat_lib = repeat_lib
         self.tasks = {}
-        self.base_id = 0
 
     def _next_id(self):
-        self.base_id += 1
-        return self.base_id
+        return str(uuid.uuid4())
 
     def process_message(self, message_id, message):
         action = message['task_action']
@@ -92,6 +91,7 @@ class TaskManager(object):
                 })
 
         removing = self.tasks.pop(task_id)
+        logger.info('Removed task with ID {}.'.format(task_id))
         return self._generate_reply(specifications.SUCCESS, {
                 'id' : task_id,
                 'file_name' : removing.file_name
