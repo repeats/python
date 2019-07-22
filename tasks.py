@@ -56,7 +56,8 @@ class TaskManager(object):
     def _generate_reply(self, status, message):
         return {
             'status' : status,
-            'message' : message
+            'message' : message,
+            'is_reply_message': True,
         }
 
     def create_task(self, file_name):
